@@ -1,0 +1,9 @@
+long long fibo[50] = { 0,1, };
+
+long long fi(int n) {
+    if (n == 0 || n==1)
+        return fibo[n];
+    else if (fibo[n] == 0)
+        fibo[n] =  fi(n-2) + fi(n-1);
+    return fibo[n];
+}
