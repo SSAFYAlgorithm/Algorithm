@@ -3,6 +3,16 @@
 #include<vector>
 using namespace std;
 
+/*
+11
+1 10 99 7 98 3 1 4 100 3 100
+ans: 10 99 100 98 100 4 4 100 -1 100 -1
+
+7
+4 3 2 1 2 3 4
+ans : -1 4 3 2 3 4 -1
+*/
+
 int main()
 {
 	std::ios::sync_with_stdio(false);
@@ -33,6 +43,12 @@ int main()
 			}
 			else {
 				while (1) {
+					if (stk.size() == 1) {
+						if (stk.top() == vect[i]) {	//같은수 비교시 -1입력 근데왜안될까
+							ans.push_back(-1);
+							break;
+						}
+					}
 					if (stk.empty()) {
 						ans.push_back(-1);
 						break;
