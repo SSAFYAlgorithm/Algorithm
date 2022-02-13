@@ -1,85 +1,90 @@
 #include<iostream>
 #include<deque>
 #include<string>
-
+#include<vector>
+#include<sstream>
 using namespace std;
 
 int main()
 {
 	int T;
 	deque<int> deq;
-	
+
 	string p;
 	int n;
 	string arr;
+
 	cin >> T;
 	for (int i = 0;i < T;i++) {
 		cin >> p;
 		cin >> n;
 		cin >> arr;
-		//배열을 숫자로
-		int cnt = 0;
+		string tempstr;
 		int flag = 0;
-		for (int i = 0; i < arr.size();i++) {
-			if (arr[i] == '[' || arr[i] == ']' || arr[i] == ',') {
+		bool error = false;
+		for (int j = 0; j < arr.length(); j++) {
+			if (arr[j] == '[') {
 				continue;
 			}
-			else if (arr[i] >= '0' && arr[i] <= '9') {
-				deq.push_back((int)(arr[i])-48);
-				cnt++;
+			else if ('0' <= arr[j] && arr[j] <= '9') {
+				tempstr = tempstr + arr[j];
+			}
+			else {
+				if (!tempstr.empty()) {
+					deq.push_back(stoi(tempstr));
+					tempstr.clear();
+				}
 			}
 		}
-		if (cnt != n) {
-			cout << "error\n";
-			deq.clear();
-		}
-		else if (n == 0 || deq.empty()) {
-			cout << "error\n";
-			deq.clear();
-		}
-		else {
-			
-			for (int i = 0;i < p.size();i++) {
-				if (p[i] == 'R') {
-					flag++;
+		for (int i = 0; i < p.size();i++) {
+			if (p[i] == 'R') {
+				flag++;
+			}
+			else {//p[i]=='D'
+				if (deq.empty()) {
+					error = true;
+					break;
 				}
-				else if (p[i] == 'D') {
-					if (flag % 2 == 1) {
-						if (deq.empty()) {
-							cout << "error\n";
-							break;
-						}
+				else {
+					if (flag % 2) {
 						deq.pop_back();
 						n--;
 					}
 					else {
-						if (deq.empty()) {
-							cout << "error\n";
-							break;
-						}
 						deq.pop_front();
 						n--;
 					}
 				}
 			}
-			cout << "[";
-			if (flag%2 == 1) {
-				for (int j = 0; j < n-1;j++) {
-					cout << deq.back() << ",";
-					deq.pop_back();
-				}
-				cout << deq.back() << "]";
-			}
-			else {
-				for (int j = 0; j < n - 1;j++) {
-					cout << deq.front() << ",";
-					deq.pop_front();
-				}
-				cout << deq.front() << "]";
 
-			}
 		}
+		if (error) {
+			cout << "error\n";
+		}
+		else {
+			cout << "[";
+			if (!deq.empty()) {
+
+				if (flag % 2 == 1) {
+					for (int j = 0; j < n - 1;j++) {
+						cout << deq.back() << ",";
+						deq.pop_back();
+					}
+					cout << deq.back();
+				}
+				else {
+					for (int j = 0; j < n - 1;j++) {
+						cout << deq.front() << ",";
+						deq.pop_front();
+					}
+					cout << deq.front();
+
+				}
+			}
+			cout << "]";
+		}
+		deq.clear();
 	}
-	
+
 }
 
