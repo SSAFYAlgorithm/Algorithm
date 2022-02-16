@@ -15,10 +15,11 @@ int main() {
 	cout << "<";
 	if (k == 1) {
 		while (!q.empty()) {
-			cout << q.front() << ", ";
+			if (q.size() == 1) cout << q.front();
+			else cout << q.front() << ", ";
 			q.pop();
 		}
-		cout << "\b\b>";
+		cout << ">";
 	}
 	else {
 		while (!q.empty()) {
@@ -27,10 +28,11 @@ int main() {
 				q.pop();
 				q.push(f);
 			}
-			cout << q.front() << ", ";
+			if (q.size() == 1) cout << q.front();
+			else cout << q.front() << ", ";
 			q.pop();
 		}
-		cout << "\b\b>";
+		cout << ">";
 	}
 	return 0;
 }
