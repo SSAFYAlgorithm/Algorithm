@@ -81,7 +81,7 @@ int main()
 
 				}
 			}
-			cout << "]";
+			cout << "]\n";
 		}
 		deq.clear();
 	}
