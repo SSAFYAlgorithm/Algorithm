@@ -7,41 +7,28 @@ int cnt[301][301] = { 0 };
 int N;
 bool check[301][301] = { 0 };
 void bfs(int y, int x) {
+    int dx[8] = { -2,-1,1,2,-2,-1,1,2 };
+    int dy[8] = { -1,-2,-2,-1,1,2,2,1 };
     queue<pair<int, int>>que;
     que.push(pair<int, int>(y, x));
-    check[y][x] = 1;
-    cnt[y][x] = 1;
-    while (1) {
 
-        int dx[8] = { -2,-1,1,2,-2,-1,1,2 };
-        int dy[8] = { -1,-2,-2,-1,1,2,2,1 };
-        for (int i = 0;i < 8;i++) {
-            int tempX = x + dx[i];
-            int tempY = y + dy[i];
-            if (!(tempX < 0 || tempY < 0 || tempX >= N || tempY >= N)) {
-                if (cnt[tempX][tempY]) {
-                    cnt[y][x] = cnt[tempX][tempY] + 1;
-                    break;
-                }
-            }
-        }
-        que.pop();
-        for (int i = 0;i < 8;i++) {
-            int tempX = x + dx[i];
-            int tempY = y + dy[i];
-            if (!(tempX < 0 || tempY < 0 || tempX >= N || tempY >= N)) {
-                if (!check[tempY][tempX]) {
-                    que.push(pair<int, int>(tempY, tempX));
-                    check[y][x] = true;
-                }
-            }
-        }
-        if (que.empty()) {
-            break;
-        }
+    while (1) {
+        if (que.empty()) break;
+        arr[y][x] = 1;
         y = que.front().first;
         x = que.front().second;
-
+        que.pop();
+        for (int i = 0;i < 8;i++) {
+            int tempX = dx[i] + x;
+            int tempY = dy[i] + y;
+            if (!(tempX < 0 || tempY < 0 || tempX >= N || tempY >= N))
+            {
+                if (arr[tempY][tempX] == 0 && cnt[tempY][tempX] == 0) {
+                    cnt[tempY][tempX] = cnt[y][x] + 1;
+                    que.push(pair<int, int>(tempY, tempX));
+                }
+            }
+        }
     }
 
 }
@@ -55,9 +42,15 @@ int main()
         cin >> startX >> startY;
         int endX, endY;
         cin >> endX >> endY;
-        arr[startY][startX] = 1;   //시작점
-        arr[endY][endX] = 100;      //종점
+
         bfs(startY, startX);
         cout << cnt[endY][endX] << '\n';
+        //초기화
+        for (int i = 0;i < N;i++) {
+            for (int j = 0;j < N;j++) {
+                arr[i][j] = 0;
+                cnt[i][j] = 0;
+            }
+        }
     }
 }

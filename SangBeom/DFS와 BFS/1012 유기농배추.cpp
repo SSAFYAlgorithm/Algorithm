@@ -7,6 +7,28 @@ bool check[51][51] = { 0 };
 int flag;
 int N, M, K;
 int cnt = 0;
+/*
+반례
+2
+
+5 3 6
+0 2
+1 2
+2 2
+3 2
+4 2
+4 0
+
+5 3 6
+0 2
+1 2
+2 2
+3 2
+4 2
+4 0
+
+ans 2 2
+*/
 void dfs(int py, int px)		//테스트케이스 통과, 반례??
 {
 	flag = 1;
@@ -24,6 +46,7 @@ void dfs(int py, int px)		//테스트케이스 통과, 반례??
 			}
 		}
 	}
+
 }
 
 int main()
@@ -53,5 +76,11 @@ int main()
 			}
 		}
 		cout << cnt << '\n';
+		for (int i = 0;i < M;i++) {
+			for (int j = 0;j < N;j++) {
+				arr[i][j] = 0;
+				check[i][j] = 0;
+			}
+		}
 	}
 }
