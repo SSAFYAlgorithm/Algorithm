@@ -6,7 +6,7 @@ int used[1001] = { 0 };
 void dfs(int now) {
 	cout << now << ' ';
 
-	for (int i = 0; i < 1000; i++) {
+	for (int i = 0; i <= 1001; i++) {
 		if (arr[now][i] == 0) continue;
 		if (used[i] == 1) continue;
 		used[i] = 1;
