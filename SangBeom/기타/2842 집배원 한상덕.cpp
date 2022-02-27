@@ -1,6 +1,7 @@
 #include<iostream>
 #include<string>
 #include<queue>
+#include<algorithm>
 using namespace std;
 
 char arr[51][51];
@@ -8,32 +9,32 @@ bool visited[51][51] = { 0 };
 int height[51][51];
 int Knum = 0;
 int Kcount = 0;
-int maxHeight = 0;
-int minHeight = 10000001;
 int n;
 int startX, startY;
 priority_queue<int, vector<int>, greater<int>>pq;
-
-//각 경로마다 피로도 최대값과 최소값을 어떻게 구할까
-void dfs(int y, int x)
+vector<int>route;
+struct Piro
 {
+    int maxHeight;
+    int minHeight;
+};
 
-    if (y == startY && x == startX) {
-        maxHeight = 0;
-        minHeight = 10000001;
-        Kcount = 0;
+void dfs(int y, int x, Piro now)
+{
+    //route.push_back(height[y][x]);
+    if (height[y][x] > now.maxHeight) {
+        now.maxHeight = height[y][x];
     }
-    if (height[y][x] > maxHeight) {
-        maxHeight = height[y][x];
-    }
-    if (height[y][x] < minHeight) {
-        minHeight = height[y][x];
+    if (height[y][x] < now.minHeight) {
+        now.minHeight = height[y][x];
     }
     if (arr[y][x] == 'K') {
         Kcount++;
-        if (Kcount == Knum) {
-            pq.push(maxHeight - minHeight);
 
+        if (Kcount == Knum) {
+            //            int max = *max_element(route.begin(), route.end());
+              //          int min = *min_element(route.begin(), route.end());
+            pq.push(now.maxHeight - now.minHeight);
             return;
         }
     }
@@ -44,11 +45,14 @@ void dfs(int y, int x)
         int tx = dx[i] + x;
         int ty = dy[i] + y;
         if (tx < 0 || ty < 0 || tx >= n || ty >= n)continue;
-        if (visited[ty][tx])continue;
+        if (visited[ty][tx] == true)continue;
         visited[ty][tx] = 1;
-        dfs(ty, tx);
+        dfs(ty, tx, now);
         visited[ty][tx] = 0;
-
+        //  route.pop_back();
+        if (arr[ty][tx] == 'K') {
+            Kcount--;
+        }
 
     }
 
@@ -85,7 +89,11 @@ int main()
     visited[y][x] = 1;
     startY = y;
     startX = x;
-    dfs(y, x);
+    Piro now;
+    now.maxHeight = height[y][x];
+    now.minHeight = height[y][x];
+    dfs(y, x, now);
+
     cout << pq.top();
 
 }
