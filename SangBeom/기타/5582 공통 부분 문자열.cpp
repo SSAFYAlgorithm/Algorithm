@@ -22,47 +22,62 @@ int main()
 		str2 = a;
 	}
 
-	string word = "";
+
 	//string lcs;
 	int length = 1;
-	int flag;
+	int flag = 0;
 	int max = 0;
-	while (1)
-	{
-		for (int i = 0;i < str2.size();i++) {
-			if (i + length > str2.size()) break;
-			word = str2.substr(i, length);
-			if (str1.find(word) != -1) {
-				max = word.size();
-			}
+	vector<string>dp;
+	for (int i = 0;i < str2.size();i++) {
+		if (str1.find(str2[i]) != -1) {
+			string word = "";
+			word += str2[i];
+			dp.push_back(word);
+			word.clear();
+			flag = 1;
 		}
-		if (max < length) break;
-		length++;
+	}
+
+	if (!flag) {
+		cout << -1;
+	}
+	else {
+		while (flag != 2) {  //dp에 가능한 문자들만 넣고 dp내의 문자들을 더해 문자열을 탐색, 찾지 못하면 해당 인덱스 삭제
+			length++;
+			int oversizeFlag = 0;
+			for (int i = 0; i < dp.size();) {
+				string word = dp[i];
+				for (int j = i + 1;j < i + length;j++) {
+					if (i + length > dp.size()) {
+						oversizeFlag = 1;
+						dp.erase(dp.end() - 1);
+						break;
+					}
+					word += dp[j];
+				}
+				if (oversizeFlag) break;
+
+				if (str1.find(word) != -1) {
+					dp[i] = word;
+					i++;
+				}
+				else {
+					dp.erase(dp.begin() + i);
+					if (dp.empty()) {
+						flag = 2;
+						break;
+					}
+				}
+			}
+
+		}
+		cout << length;
 
 	}
-	cout << max;
-	//	while (1)		//Timeout
-	//	{
-	//		for (int i = 0;i < str2.size();i++) {
-	//			word = "";
-	//			flag = 0;
-	//			for (int j = i;j < i + length;j++) {
-	//				if (str2[j] == '\0') {
-	//					flag = 1;
-	//					break;
-	//				}
-	//				word += str2[j];
-	//			}
-	//			if (flag) break;
-	//			if (str1.find(word) != -1) {
-	////				lcs = word;
-	//				max = word.size();
-	//			}
-	//		}
-	//		if (max < length) break;
-	//		length++;
-	//	}
-	//	cout << max;
+	int de = -1;
+
+
+
 
 
 }
