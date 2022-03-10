@@ -13,39 +13,34 @@ using namespace std;
 NO
 */
 
-int arr[20001][20001] = { 0 };
+vector<int>vect[20001];
 int check[20001] = { 0 };
 //vector<int>check(20001);
 int V, E;	//정점,간선
 int flag;
 int flag2 = 1;
 void dfs(int level) {
-
 	flag = 0;
 	if (check[level] == 0) {
 		check[level] = 1;
 	}
-	for (int i = 1;i <= V;i++) {
-		if (arr[level][i]) {
-			if (check[i] == 0) {
-				if (check[level] == 1) {
-					check[i] = -1;
-				}
-				if (check[level] == -1) {
-					check[i] = 1;
-				}
-				flag = 1;
-				dfs(i);
-
+	for (int i = 0; i < vect[level].size();i++) {
+		if (check[vect[level][i]] == 0) {
+			if (check[level] == 1) {
+				check[vect[level][i]] = -1;
 			}
-			if (check[i] == check[level]) {
-				flag2 = 0;
-				break;
+			else if (check[level] == -1) {
+				check[vect[level][i]] = 1;
 			}
+			flag = 1;
+			dfs(vect[level][i]);
+		}
+		if (check[level] == check[vect[level][i]]) {
+			flag2 = 0;
+			break;
 		}
 	}
-	if (!flag) return;
-
+	if (!flag)return;
 }
 
 
@@ -55,18 +50,18 @@ int main()
 	cin >> K;
 	for (int i = 0;i < K;i++) {
 		cin >> V >> E;
+
 		for (int j = 0;j < E;j++) {
-			int u, v;
-			cin >> u >> v;
-			arr[u][v] = 1;
-			arr[v][u] = 1;
+			int from, to;
+			cin >> from >> to;
+			vect[from].push_back(to);
+			vect[to].push_back(from);
 		}
-		for (int i = 1;i < V;i++) {
+		for (int i = 1;i <= V;i++) {
 			if (check[i] == 0) {
 				dfs(i);
 			}
 		}
-
 		if (flag2) {
 			cout << "YES\n";
 		}
@@ -74,15 +69,7 @@ int main()
 			cout << "NO\n";
 		}
 		flag2 = 1;
-		/*
-		for (int i = 0;i < E;i++) {
-			for (int j = 0;j < E;j++) {
-				arr[i][j] = 0;
-			}
-			check[i] = 0;
-		}
-		*/
-		memset(arr, 0, sizeof(arr));
-		memset(check, 0, sizeof(arr));
+		memset(vect, 0, sizeof(vect));
+		memset(check, 0, sizeof(check));
 	}
 }

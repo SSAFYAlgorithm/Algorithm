@@ -1,70 +1,112 @@
 #include<iostream>
 #include<string>
+#include<stack>
 #include<vector>
 using namespace std;
-/*
-9%
-dfs 없이 풀수있나
-*/
+
+
 int n;
-int check[100000];
-vector<int>vect;
-vector<int>mem;
-vector<int>res;
-int cnt = 0;
-int m = 210000000;
-void dfs(int level)
+int cnt1 = 0;
+int cnt2 = 1;
+string str;
+string res;
+string temp;
+void solve1()//00
 {
-	if (level == n) {
-		//check결정 토글
-		cnt = 0;
-		for (int i = 0;i < n;i++) {
-			if (check[i] == 1) {
-				for (int j = 0;j < 3;j++) {
-					int d[3] = { -1,0,1 };
-					int temp = d[j] + i;
-					if (temp < 0 || temp >= n)continue;
-					vect[temp] = 1 - vect[temp];
-				}
-				cnt++;
+	int d[3] = { -1,0,1 };
+	for (int i = 1;i < str.size();i++) {
+		for (int j = 0;j < 3;j++) {
+			int t = i + d[j];
+			if (t >= n)continue;
+			if (temp[t] == '0') temp[t] = '1';
+			else temp[t] = '0';
+		}
+		if (res[i - 1] == temp[i - 1]) {
+			for (int j = 0;j < 3;j++) {
+				int t = i + d[j];
+				if (t >= n)continue;
+				str[t] = temp[t];
+			}
+			cnt1++;
+		}
+		else {
+			for (int j = 0;j < 3;j++) {
+				int t = i + d[j];
+				if (t >= n)continue;
+				temp[t] = str[t];
 			}
 		}
-		if (res == vect) {
-			if (m > cnt) {
-				m = cnt;
-			}
-		}
-		vect = mem;
-		return;
 	}
-	for (int i = 0;i < 2;i++) {
-		check[level] = i;
-		dfs(level + 1);
+	if (str[n - 1] != res[n - 1] || str[n - 2] != res[n - 2]) {
+		cnt1 = -1;
 	}
 }
-
+void solve2()//11
+{
+	int d[3] = { -1,0,1 };
+	if (temp[0] == '0') temp[0] = '1';
+	else temp[0] = '0';
+	if (temp[1] == '0') temp[1] = '1';
+	else temp[1] = '0';
+	if (str[0] == '0') str[0] = '1';
+	else str[0] = '0';
+	if (str[1] == '0') str[1] = '1';
+	else str[1] = '0';
+	for (int i = 1;i < str.size();i++) {
+		for (int j = 0;j < 3;j++) {
+			int t = i + d[j];
+			if (t >= n)continue;
+			if (temp[t] == '0') temp[t] = '1';
+			else temp[t] = '0';
+		}
+		if (res[i - 1] == temp[i - 1]) {
+			for (int j = 0;j < 3;j++) {
+				int t = i + d[j];
+				if (t >= n)continue;
+				str[t] = temp[t];
+			}
+			cnt2++;
+		}
+		else {
+			for (int j = 0;j < 3;j++) {
+				int t = i + d[j];
+				if (t >= n)continue;
+				temp[t] = str[t];
+			}
+		}
+	}
+	if (str[n - 1] != res[n - 1] || str[n - 2] != res[n - 2]) {
+		cnt2 = -1;
+	}
+}
 int main()
 {
-	ios::sync_with_stdio(false);
-	cin.tie(0);
-	cout.tie(0);
 	cin >> n;
-	string num;
-	cin >> num;
-	string ans;
-	cin >> ans;
-
-	for (int i = 0;i < n;i++) {
-		vect.push_back((int)(num[i] - '0'));
-		mem.push_back((int)(num[i] - '0'));
-		res.push_back((int)(ans[i] - '0'));
+	cin >> str;
+	cin >> res;
+	temp = str;
+	string rememberstr = str;
+	solve1();
+	str = rememberstr;
+	temp = rememberstr;
+	solve2();
+	if (cnt1 == -1 || cnt2 == -1) {
+		if (cnt1 == -1 && cnt2 == -1) {
+			cout << -1;
+		}
+		else if (cnt1 == -1) {
+			cout << cnt2;
+		}
+		else {
+			cout << cnt1;
+		}
 	}
-	//t=i-t; ,dfs
-	dfs(0);
-
-	if (m == 210000000) {// 불가능
-		cout << -1;
+	else {
+		if (cnt1 >= cnt2) {
+			cout << cnt2;
+		}
+		else {
+			cout << cnt1;
+		}
 	}
-	else
-		cout << m;
 }
