@@ -12,7 +12,7 @@ int temp2[65][65] = { 0 };
 void angle(int r, int c, int L) {
 	memset(temp, 0, sizeof(temp));
 	memset(temp2, 0, sizeof(temp2));
-	int num = pow(2, L);
+	int num = pow(2, L);  
 	for (int i = 0;i < num;i++) {
 		for (int j = 0;j < num;j++) {
 			temp[i][j] = MAP[i + r][j + c];
