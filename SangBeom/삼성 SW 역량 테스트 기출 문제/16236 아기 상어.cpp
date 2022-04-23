@@ -86,7 +86,7 @@ void solve()
 
 int main()
 {
-	freopen("input.txt", "r", stdin);
+	//freopen("input.txt", "r", stdin);
 	cin >> N;
 
 	for (int i = 0;i < N;i++) {
