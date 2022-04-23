@@ -28,8 +28,8 @@ int possible(int r, int c) {
 			check[tx][ty] = check[now.first][now.second] + 1;
 			que.push(make_pair(tx, ty));
 			if (tx == r && ty == c) {
-
-				return check[tx][ty] - 1;
+				
+				return check[tx][ty]-1;
 			}
 		}
 	}
@@ -37,11 +37,11 @@ int possible(int r, int c) {
 }
 int check()
 {
-	int cnt = 0;
+	int cnt=0;
 	for (int i = 0;i < N;i++) {
 		for (int j = 0;j < N;j++) {
 			if (MAP[i][j] == 9)continue;
-			if (MAP[i][j] < SIZE && MAP[i][j] != 0) {
+			if (MAP[i][j] < SIZE&&MAP[i][j]!=0) {
 				cnt++;
 			}
 		}
@@ -63,7 +63,7 @@ void solve()
 				for (int j = 0;j < N;j++) {
 					if (MAP[i][j] < SIZE && MAP[i][j] != 0) {
 						int now = possible(i, j);
-						if (sum > now && now != -1) {
+						if (sum > now && now!=-1) {
 							x = i;y = j;
 							sum = now;
 						}
