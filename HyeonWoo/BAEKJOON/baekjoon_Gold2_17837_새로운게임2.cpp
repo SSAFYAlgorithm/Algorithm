@@ -14,7 +14,7 @@ struct INFO {
 };
 
 vector<vector<vector<INFO>>> map(13, vector<vector<INFO>>(13, vector<INFO>()));
-
+// vector <INFO> map[13][13]; 이렇게 작성하면 훨씬 간편한것을....
 struct Node {
 	int y, x;
 };
